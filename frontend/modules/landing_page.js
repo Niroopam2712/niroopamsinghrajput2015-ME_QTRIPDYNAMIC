@@ -4,7 +4,7 @@ async function init() {
   //Fetches list of all cities along with their images and description
   let cities = await fetchCities();
   console.log('From init()');
-  console.log("http://3.111.120.211:8082/cities");
+  console.log("http://65.1.195.13:8082/cities");
   console.log(cities);
 
   //Updates the DOM with the cities
@@ -18,14 +18,15 @@ async function fetchCities() {
   // TODO: MODULE_CITIES
   // 1. Fetch cities using the Backend API and return the data
   try{
-  let res = await fetch(config.backendEndpoint+"/cities");
-  let data = await res.json();
-  return data;
+    let res = await fetch(config.backendEndpoint+"/cities");
+    let data = await res.json();
+    return data;
+    }
+    catch(err){
+      return null;
+    } 
   }
-  catch(err){
-    return null;
-  } 
-}
+  
 
 //Implementation of DOM manipulation to add cities
 function addCityToDOM(id, city, description, image) {
