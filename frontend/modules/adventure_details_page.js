@@ -4,32 +4,81 @@ import config from "../conf/index.js";
 function getAdventureIdFromURL(search) {
   // TODO: MODULE_ADVENTURE_DETAILS
   // 1. Get the Adventure Id from the URL
-
+  const url = search.split('=')[1];
+  //console.log(url)
 
   // Place holder for functionality to work in the Stubs
-  return null;
+  return url;
 }
 //Implementation of fetch call with a paramterized input based on adventure ID
 async function fetchAdventureDetails(adventureId) {
   // TODO: MODULE_ADVENTURE_DETAILS
   // 1. Fetch the details of the adventure by making an API call
+  let url = config.backendEndpoint + `/adventures/detail?adventure=${adventureId}`;
+  try{
+    let res = await fetch(url);
+    let response = await res.json();
+    return response;
+  }
+  catch(err){
+    return null;
+}
+
 
 
   // Place holder for functionality to work in the Stubs
-  return null;
+  
 }
 
 //Implementation of DOM manipulation to add adventure details to DOM
 function addAdventureDetailsToDOM(adventure) {
   // TODO: MODULE_ADVENTURE_DETAILS
   // 1. Add the details of the adventure to the HTML DOM
-
+  // console.log(adventure)
+  document.getElementById("adventure-name").innerHTML = adventure.name;
+  document.getElementById("adventure-subtitle").innerHTML = adventure.subtitle;
+  document.getElementById("adventure-content").innerHTML = adventure.content;
+  adventure.images.forEach((ele) => {
+    const imgDiv = document.createElement("img");
+    imgDiv.setAttribute("src", ele);
+    imgDiv.setAttribute("class", "activity-card-image");
+    document.getElementById("photo-gallery").appendChild(imgDiv);
+  });
 }
 
 //Implementation of bootstrap gallery component
 function addBootstrapPhotoGallery(images) {
   // TODO: MODULE_ADVENTURE_DETAILS
   // 1. Add the bootstrap carousel to show the Adventure images
+  // console.log(images)
+  document.getElementById(
+    "photo-gallery"
+  ).innerHTML = `<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  </div>
+  `;
+
+  images.forEach((ele) => {
+    const carouselItem = document.createElement("div");
+    carouselItem.setAttribute("class", "carousel-item");
+    const imgDiv = document.createElement("img");
+    imgDiv.setAttribute("src", ele);
+    imgDiv.setAttribute("class", "d-block w-100");
+    carouselItem.appendChild(imgDiv);
+    document.querySelector(".carousel-inner").appendChild(carouselItem);
+  });
+  document.getElementsByClassName("carousel-item")[0].className =
+    "carousel-item active";
 
 }
 
