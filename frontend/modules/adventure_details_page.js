@@ -115,25 +115,22 @@ function captureFormSubmit(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. Capture the query details and make a POST API call using fetch() to make the reservation
   // 2. If the reservation is successful, show an alert with "Success!" and refresh the page. If the reservation fails, just show an alert with "Failed!".
-  const url = config.backendEndpoint + `/reservations/new`;
   $("#myForm").on("submit", function (e) {
-    let data = $("#myForm").serialize();
-    data += `&adventure=${adventure.id}`;
-    // console.log(data);
     e.preventDefault();
+    var data = $(this).serialize() + "&adventure=" + adventure.id;
+    let url = config.backendEndpoint + "/reservations/new";
     $.ajax({
-      type: "post",
       url: url,
-      // dataType: "json",
-      // contentType: "application/json; charset=utf-8",
+      type: "POST",
+      //dataType: "application/json",
       data: data,
-      success: function (data) {
-        // console.log(data);
+      success: function (response) {
+        console.log(response, data);
         alert("Success!");
-        location.reload();
+        window.location.reload();
       },
-      error: function (data) {
-        // console.log(data);
+      error: function (xhr, textStatus, errorThrown) {
+        console.log(xhr, textStatus, errorThrown);
         alert("Failed!");
       },
     });
