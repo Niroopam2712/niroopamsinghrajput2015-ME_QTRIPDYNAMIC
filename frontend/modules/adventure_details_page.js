@@ -115,26 +115,40 @@ function captureFormSubmit(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. Capture the query details and make a POST API call using fetch() to make the reservation
   // 2. If the reservation is successful, show an alert with "Success!" and refresh the page. If the reservation fails, just show an alert with "Failed!".
-  $("#myForm").on("submit", function (e) {
-    e.preventDefault();
-    var data = $(this).serialize() + "&adventure=" + adventure.id;
-    let url = config.backendEndpoint + "/reservations/new";
-    $.ajax({
-      url: url,
-      type: "POST",
-      //dataType: "application/json",
-      data: data,
-      success: function (response) {
-        console.log(response, data);
-        alert("Success!");
-        window.location.reload();
+  let form = document.getElementById("myForm");
+  myForm.onsubmit = (event) => {
+    const name = form.elements["name"].value;
+    const date = form.elements["date"].value;
+    const person = form.elements["person"].value;
+    const reservationData = {
+      name: name,
+      date: date,
+      person: person,
+      adventure: adventure.id,
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      error: function (xhr, textStatus, errorThrown) {
-        console.log(xhr, textStatus, errorThrown);
+      body: JSON.stringify(reservationData),
+    };
+
+    fetch(`${config.backendEndpoint}/reservations/new`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data:", data);
+        alert("Success");
+        location.reload();
+      })
+      .catch((error) => {
         alert("Failed!");
-      },
-    });
-  });
+        console.error("Error:", error);
+      });
+    event.preventDefault();
+  };
+
 }
 
 //Implementation of success banner after reservation
